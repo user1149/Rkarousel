@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Id": "Rkarousel",
+        "Name": "Rkarousel",
+        "Description": "Window scrolling extension for KWin",
+        "Description[ru]": "Расширение для прокрутки окон в KWin",
+        "Icon": "preferences-system-windows",
+        "Authors": [
+            {
+                "Name": "@Flooccinaucinihilipilification"
+            }
+        ],
+        "Version": "0.1.7",
+        "License": "GPL-3.0-only",
+        "Website": "https://github.com/Flooccinaucinihilipilification/Rkarousel"
+    },
+    "X-Plasma-API": "declarativescript",
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-MainScript": "ui/main.qml",
+    "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted"
+}

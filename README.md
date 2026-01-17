@@ -1,78 +1,104 @@
-# Karousel
-Scrollable tiling Kwin script. Works especially well with ultrawide screens.
-Use with [this](https://github.com/peterfajdiga/kwin4_effect_geometry_change) for animations.
+# Rkarousel (Wayland Optimized)
 
-https://github.com/peterfajdiga/karousel/assets/22796326/2ab62d18-09c7-45f9-8fda-e5e36b8d7a02
+**Rkarousel** — это скрипт тайлинга с прокруткой для KWin. Особенно хорошо подходит для ультрашироких (Ultrawide) мониторов.
 
-A scrollable tiling window manager tiles windows, but it does not maximize their widths. Instead, it leaves the width of windows to the user's control.
-Windows are automatically centered when possible. And when running out of width, windows can be scrolled through horizontally.
+В отличие от обычного тайлинга, этот скрипт не пытается впихнуть все окна на один экран, сжимая их до нечитаемого состояния. Вместо этого он выстраивает окна в бесконечную горизонтальную ленту (карусель). Вы сами контролируете ширину окон, а скрипт просто центрирует активное окно.
 
-Similar window managers include [PaperWM](https://github.com/paperwm/PaperWM),
-[Niri](https://github.com/YaLTeR/niri), and
-[Cardboard](https://gitlab.com/cardboardwm/cardboard).
+Этот подход похож на оконные менеджеры [PaperWM](https://github.com/paperwm/PaperWM), [Niri](https://github.com/YaLTeR/niri) и [Cardboard](https://gitlab.com/cardboardwm/cardboard).
 
-## Dependencies
-Karousel requires the following QML modules:
-- QtQuick 6.0
-- org.kde.kwin 3.0
-- org.kde.notification 1.0
+> 💡 **Совет:** Для плавных анимаций при перемещении окон рекомендуется установить [этот эффект](https://github.com/peterfajdiga/kwin4_effect_geometry_change).
 
-## Limitations
-- Doesn't support multiple screens
-- Doesn't support windows on all desktops
-- Doesn't support windows on multiple activities
+## Особенности этого форка
+Это модифицированная версия оригинального [Karousel](https://github.com/peterfajdiga/karousel), созданная специально для **KDE Plasma 6** и сессии **Wayland**.
+* **Wayland Only:** Полностью удален код для поддержки X11, что устранило "дрожание" окон и повысило производительность.
+* **Оптимизация:** Убраны лишние проверки геометрии, скрипт работает быстрее и плавнее.
 
-## Installation
-First install the _org.kde.notification_ QML module (_qml-module-org-kde-notifications_ package on Ubuntu).
+## Зависимости
+Для работы скрипта требуются следующие QML модули (обычно уже есть в системе, но проверьте):
+- `QtQuick 6.0`
+- `org.kde.kwin 3.0`
+- `org.kde.notification 1.0` (пакет `qml-module-org-kde-notifications` в Ubuntu/Debian или `kwin` в Arch).
 
-Then download the [latest release](https://github.com/peterfajdiga/karousel/releases/latest) and extract it into _~/.local/share/kwin/scripts/_.
+## Ограничения
+* **Только Wayland** (на X11 работать не будет).
+* Пока нет поддержки нескольких мониторов.
+* Не поддерживает закрепление окна на "Всех рабочих столах".
+* Не поддерживает Комнаты (Activities).
 
-Or clone the repo and run `make install` (requires npm, node, and tsc).
+## Установка
 
-## Key bindings
-The key bindings can be configured in KDE System Settings among KWin's own keyboard shortcuts.
-Here's the default ones:
-| Shortcut                 | Action                                                                                                                         |
-| ---                      | ---                                                                                                                            |
-| Meta+Space               | Toggle floating                                                                                                                |
-| Meta+A                   | Move focus left                                                                                                                |
-| Meta+D                   | Move focus right (Clashes with default KDE shortcuts, may require manual remapping)                                            |
-| Meta+W                   | Move focus up (Clashes with default KDE shortcuts, may require manual remapping)                                               |
-| Meta+S                   | Move focus down (Clashes with default KDE shortcuts, may require manual remapping)                                             |
-| (unassigned)             | Move focus to the next window in grid                                                                                          |
-| (unassigned)             | Move focus to the previous window in grid                                                                                      |
-| Meta+Home                | Move focus to start                                                                                                            |
-| Meta+End                 | Move focus to end                                                                                                              |
-| Meta+Shift+A             | Move window left (Moves window out of and into columns)                                                                        |
-| Meta+Shift+D             | Move window right (Moves window out of and into columns)                                                                       |
-| Meta+Shift+W             | Move window up                                                                                                                 |
-| Meta+Shift+S             | Move window down                                                                                                               |
-| (unassigned)             | Move window to the next position in grid                                                                                       |
-| (unassigned)             | Move window to the previous position in grid                                                                                   |
-| Meta+Shift+Home          | Move window to start                                                                                                           |
-| Meta+Shift+End           | Move window to end                                                                                                             |
-| Meta+X                   | Toggle stacked layout for focused column (Only the active window visible)                                                      |
-| Meta+Ctrl+Shift+A        | Move column left                                                                                                               |
-| Meta+Ctrl+Shift+D        | Move column right                                                                                                              |
-| Meta+Ctrl+Shift+Home     | Move column to start                                                                                                           |
-| Meta+Ctrl+Shift+End      | Move column to end                                                                                                             |
-| Meta+Ctrl++              | Increase column width                                                                                                          |
-| Meta+Ctrl+-              | Decrease column width                                                                                                          |
-| Meta+R                   | Cycle through preset column widths                                                                                             |
-| Meta+Shift+R             | Cycle through preset column widths in reverse                                                                                  |
-| Meta+Ctrl+X              | Equalize widths of visible columns                                                                                             |
-| Meta+Ctrl+A              | Squeeze left column onto the screen (Clashes with default KDE shortcuts, may require manual remapping)                         |
-| Meta+Ctrl+D              | Squeeze right column onto the screen                                                                                           |
-| Meta+Alt+Return          | Center focused window (Scrolls so that the focused window is centered in the screen)                                           |
-| Meta+Alt+A               | Scroll one column to the left                                                                                                  |
-| Meta+Alt+D               | Scroll one column to the right                                                                                                 |
-| Meta+Alt+PgUp            | Scroll left                                                                                                                    |
-| Meta+Alt+PgDown          | Scroll right                                                                                                                   |
-| Meta+Alt+Home            | Scroll to start                                                                                                                |
-| Meta+Alt+End             | Scroll to end                                                                                                                  |
-| Meta+Ctrl+Return         | Move Karousel grid to the current screen                                                                                       |
-| Meta+[N]                 | Move focus to column N (Clashes with default KDE shortcuts, may require manual remapping)                                      |
-| Meta+Shift+[N]           | Move window to column N (Requires manual remapping according to your keyboard layout, e.g. Meta+Shift+1 -> Meta+!)             |
-| Meta+Ctrl+Shift+[N]      | Move column to position N (Requires manual remapping according to your keyboard layout, e.g. Meta+Ctrl+Shift+1 -> Meta+Ctrl+!) |
-| Meta+Ctrl+Shift+F[N]     | Move column to desktop N                                                                                                       |
-| Meta+Ctrl+Shift+Alt+F[N] | Move this and all following columns to desktop N                                                                               |
+### Вручную
+1. Скачайте исходный код.
+2. Откройте терминал в папке с проектом.
+3. Выполните команду установки:
+
+```bash
+kpackagetool6 --type KWin/Script -i .
+```
+
+Для обновления скрипта (если вы скачали новую версию) используйте флаг `-u`:
+
+```bash
+kpackagetool6 --type KWin/Script -u .
+
+```
+
+### Включение
+
+1. Зайдите в **Параметры системы** -> **Диспетчер окон** -> **Скрипты KWin**.
+2. Найдите **Rkarousel**, поставьте галочку и нажмите **Применить**.
+
+## Горячие клавиши
+
+Клавиши можно перенастроить в **Параметры системы** -> **Сочетания клавиш** -> **KWin**. Ниже приведен список по умолчанию.
+
+| Сочетание | Действие |
+| --- | --- |
+| **Meta + Пробел** | Переключить режим окна (Плавающее <-> Тайлинг) |
+| **Meta + A** | Фокус влево |
+| **Meta + D** | Фокус вправо *(Может конфликтовать со стандартными, переназначьте)* |
+| **Meta + W** | Фокус вверх *(Может конфликтовать)* |
+| **Meta + S** | Фокус вниз *(Может конфликтовать)* |
+| **(не задано)** | Фокус на следующее окно в сетке |
+| **(не задано)** | Фокус на предыдущее окно в сетке |
+| **Meta + Home** | Фокус в самое начало списка |
+| **Meta + End** | Фокус в самый конец списка |
+| **Meta + Shift + A** | Переместить окно влево |
+| **Meta + Shift + D** | Переместить окно вправо |
+| **Meta + Shift + W** | Переместить окно вверх |
+| **Meta + Shift + S** | Переместить окно вниз |
+| **Meta + Shift + Home** | Переместить окно в начало |
+| **Meta + Shift + End** | Переместить окно в конец |
+| **Meta + X** | Режим "Стопка" (Stack) для колонки (видно только активное окно в колонке) |
+| **Meta + Ctrl + Shift + A** | Переместить всю колонку влево |
+| **Meta + Ctrl + Shift + D** | Переместить всю колонку вправо |
+| **Meta + Ctrl + Shift + Home** | Переместить колонку в начало |
+| **Meta + Ctrl + Shift + End** | Переместить колонку в конец |
+| **Meta + Ctrl + +** | Увеличить ширину колонки |
+| **Meta + Ctrl + -** | Уменьшить ширину колонки |
+| **Meta + R** | Переключить ширину (из пресетов: 50%, 100% и т.д.) |
+| **Meta + Shift + R** | Переключить ширину (в обратном порядке) |
+| **Meta + Ctrl + X** | Выровнять ширину всех видимых колонок |
+| **Meta + Ctrl + A** | Впихнуть левую колонку на экран (Squeeze Left) |
+| **Meta + Ctrl + D** | Впихнуть правую колонку на экран (Squeeze Right) |
+| **Meta + Alt + Return** | Отцентровать активное окно (прокрутить карусель к нему) |
+| **Meta + Alt + A** | Прокрутить на одну колонку влево |
+| **Meta + Alt + D** | Прокрутить на одну колонку вправо |
+| **Meta + Alt + PgUp** | Прокрутить влево (свободно) |
+| **Meta + Alt + PgDown** | Прокрутить вправо (свободно) |
+| **Meta + Alt + Home** | Прокрутить в начало |
+| **Meta + Alt + End** | Прокрутить в конец |
+| **Meta + Ctrl + Return** | Переместить сетку Karousel на текущий монитор |
+| **Meta + [Цифра]** | Фокус на колонку № [Цифра] |
+| **Meta + Shift + [Цифра]** | Переместить окно в колонку № [Цифра] |
+| **Meta + Ctrl + Shift + [Цифра]** | Переместить колонку на позицию № [Цифра] |
+| **Meta + Ctrl + Shift + F[Цифра]** | Переместить колонку на рабочий стол F[Цифра] |
+
+> *Примечание: **Meta** — это клавиша Super (Windows).*
+
+## Лицензия и Авторы
+
+Основано на коде [Karousel](https://github.com/peterfajdiga/karousel) от Peter Fajdiga.
+Лицензия: GPLv3.
+
+```
