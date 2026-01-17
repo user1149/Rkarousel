@@ -99,5 +99,3 @@ kpackagetool6 --type KWin/Script -u .
 
 Основано на коде [Karousel](https://github.com/peterfajdiga/karousel) от Peter Fajdiga.
 Лицензия: GPLv3.
-
-```
