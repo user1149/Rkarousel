@@ -1,6 +1,6 @@
 # Rkarousel (Wayland Optimized)
 
-**Русский** | **[English](README.en.md)**
+**Русский** | **[English](README-en.md)**
 
 **Rkarousel** — это скрипт тайлинга с прокруткой для KWin. Особенно хорошо подходит для ультрашироких (Ultrawide) мониторов.
 
