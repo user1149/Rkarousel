@@ -1,5 +1,7 @@
 # Rkarousel (Wayland Optimized)
 
+**[Русский](README.md)** | **English**
+
 **Rkarousel** is a tiling script with scrolling for KWin. It works exceptionally well on ultrawide monitors.
 
 Unlike standard tiling, this script doesn't force all windows onto a single screen, shrinking them to an unreadable size. Instead, it arranges windows into an infinite horizontal ribbon (a carousel). You control the window widths, and the script simply centers the active window.
