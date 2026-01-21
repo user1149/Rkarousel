@@ -2,40 +2,6 @@
 
 console.log("load Rkarousel");
 
-// ============================================================================
-// МОДУЛЬНАЯ АРХИТЕКТУРА KAROUSEL
-// ============================================================================
-// 
-// Конфигурация:
-//   config/defaults.js: loadConfig(), configDef, defaultWindowRules
-//
-// Утилиты (utils/):
-//   helpers.js: log, clamp, sum, rect/point checks, array utilities
-//   dataStructures.js: LinkedList, RateLimiter, Delayer, Doer, SignalManager
-//   spaceDistribution.js: fillSpace, space distribution algorithms
-//   PresetWidths.js: PresetWidths, ContextualResizer, RawResizer
-//   Scrollers.js: CenterClamper, EdgeClamper, scroller implementations
-//   WindowRuleEnforcer.js: ClientMatcher, DesktopFilter, WindowRuleEnforcer
-//
-// Компоненты (components/):
-//   Column.js: Column class for vertical window stacks
-//   Window.js: Window class wrapping KWin clients
-//   Grid.js: Grid class managing columns, ColumnRange, Range namespace
-//   Desktop.js: Desktop class managing tiling area
-//
-// Менеджеры (managers/):
-//   ClientManager.js: Clients namespace, ClientWrapper, ClientManager
-//   DesktopManager.js: DesktopManager, FocusPassing, PinManager
-//   ClientStates.js: ClientState namespace with all state classes
-//
-// Действия и привязки (actions/ + keybindings/):
-//   Actions.js: All user-triggered actions
-//   keyBindings.js: ShortcutAction, registerKeyBindings, key definitions
-//
-// ============================================================================
-
-
-
 function initWorkspaceSignalHandlers(world, focusPasser) {
     const manager = new SignalManager();
 
