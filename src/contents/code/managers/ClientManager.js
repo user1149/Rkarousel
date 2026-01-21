@@ -327,10 +327,10 @@ class ClientManager {
             return new WindowRuleEnforcer(parsedWindowRules);
         } catch (error) {
             // Попытка отправить уведомление если qmlBase доступен
-            if (typeof globalThis.qmlBase !== 'undefined' && globalThis.qmlBase) {
+            if (typeof qmlBase !== 'undefined' && qmlBase) {
                 try {
-                    if (globalThis.qmlBase.notificationInvalidWindowRules) {
-                        globalThis.qmlBase.notificationInvalidWindowRules.sendEvent();
+                    if (qmlBase.notificationInvalidWindowRules) {
+                        qmlBase.notificationInvalidWindowRules.sendEvent();
                     }
                 } catch (notifError) {
                     log("Failed to send notification:", notifError);

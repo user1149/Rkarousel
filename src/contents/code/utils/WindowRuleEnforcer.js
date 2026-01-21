@@ -40,10 +40,10 @@ class DesktopFilter {
         }
         catch (e) {
             // Попытка отправить уведомление если qmlBase доступен
-            if (typeof globalThis.qmlBase !== 'undefined' && globalThis.qmlBase) {
+            if (typeof qmlBase !== 'undefined' && qmlBase) {
                 try {
-                    if (globalThis.qmlBase.notificationInvalidTiledDesktops) {
-                        globalThis.qmlBase.notificationInvalidTiledDesktops.sendEvent();
+                    if (qmlBase.notificationInvalidTiledDesktops) {
+                        qmlBase.notificationInvalidTiledDesktops.sendEvent();
                     }
                 } catch (notifError) {
                     log("Failed to send notification:", notifError);

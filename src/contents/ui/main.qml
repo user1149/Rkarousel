@@ -13,7 +13,9 @@ Item {
     }
 
     Component.onDestruction: {
-        qmlBase.karouselInstance.destroy();
+        if (qmlBase.karouselInstance) {
+            qmlBase.karouselInstance.destroy();
+        }
     }
 
     Notification {

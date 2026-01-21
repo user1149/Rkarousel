@@ -90,10 +90,10 @@ class World {
             presetWidths = new PresetWidths(config.presetWidths, config.gapsInnerHorizontal);
         } catch (error) {
             // Попытка отправить уведомление если qmlBase доступен
-            if (typeof globalThis.qmlBase !== 'undefined' && globalThis.qmlBase) {
+            if (typeof qmlBase !== 'undefined' && qmlBase) {
                 try {
-                    if (globalThis.qmlBase.notificationInvalidPresetWidths) {
-                        globalThis.qmlBase.notificationInvalidPresetWidths.sendEvent();
+                    if (qmlBase.notificationInvalidPresetWidths) {
+                        qmlBase.notificationInvalidPresetWidths.sendEvent();
                     }
                 } catch (notifError) {
                     log("Failed to send notification:", notifError);
@@ -265,7 +265,7 @@ class World {
 function init(qmlBaseItem) {
     // Сохранять глобальный qmlBase для доступа из других модулей
     if (qmlBaseItem) {
-        globalThis.qmlBase = qmlBaseItem;
+        qmlBase = qmlBaseItem;
     }
     return new World(loadConfig());
 }
