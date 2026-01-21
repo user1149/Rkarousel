@@ -9,13 +9,11 @@ Item {
     property var karouselInstance
 
     Component.onCompleted: {
-        qmlBase.karouselInstance = Karousel.init(qmlBase);
+        qmlBase.karouselInstance = Karousel.init();
     }
 
     Component.onDestruction: {
-        if (qmlBase.karouselInstance) {
-            qmlBase.karouselInstance.destroy();
-        }
+        qmlBase.karouselInstance.destroy();
     }
 
     Notification {
