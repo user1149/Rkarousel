@@ -2,6 +2,9 @@
 
 console.log("load Rkarousel");
 
+// Глобальная переменная для доступа к QML базе из других модулей
+let qmlBase = null;
+
 function initWorkspaceSignalHandlers(world, focusPasser) {
     const manager = new SignalManager();
 
