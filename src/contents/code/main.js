@@ -259,7 +259,6 @@ class World {
 // ============================================================================
 
 /**
- * Инициализирует плагин Karousel
  * @param {QML.Item} qmlBaseItem - Base QML item со ссылкой на notifications и другие QML объекты
  * @returns {World} Главный объект плагина
  */
