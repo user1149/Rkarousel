@@ -1,9 +1,4 @@
 "use strict";
-
-// ============================================================================
-// RKAROUSEL - KWin Script для тайлового оконного менеджера на основе колонок
-// ============================================================================
-
 console.log("load Rkarousel");
 
 // ============================================================================
@@ -1159,7 +1154,7 @@ function getKeyBindings(world, actions) {
         },
         {
             name: "screen-switch",
-            description: "Move Karousel grid to the current screen",
+            description: "Move Rkarousel grid to the current screen",
             defaultKeySequence: "Meta+Ctrl+Return",
             action: () => world.do(actions.screenSwitch),
         },
@@ -2876,8 +2871,8 @@ class ShortcutAction {
             import org.kde.kwin 3.0
 
             ShortcutHandler {
-                name: "karousel-${keyBinding.name}";
-                text: "Karousel: ${keyBinding.description}";
+                name: "rkarousel-${keyBinding.name}";
+                text: "Rkarousel: ${keyBinding.description}";
                 ${sequenceLine}
             }
         `;
@@ -3070,7 +3065,7 @@ Function.prototype.partial = function (...initialArgs) {
 };
 
 function log(...args) {
-    console.log("Karousel:", ...args);
+    console.log("Rkarousel:", ...args);
 }
 
 function clamp(value, min, max) {

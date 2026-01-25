@@ -89,7 +89,7 @@ Keys can be reconfigured in **System Settings** -> **Shortcuts** -> **KWin**. Th
 | **Meta + Alt + PgDown** | Scroll right (freely) |
 | **Meta + Alt + Home** | Scroll to the beginning |
 | **Meta + Alt + End** | Scroll to the end |
-| **Meta + Ctrl + Return** | Move the Karousel grid to the current monitor |
+| **Meta + Ctrl + Return** | Move the RKarousel grid to the current monitor |
 | **Meta + [Number]** | Focus on column number [Number] |
 | **Meta + Shift + [Number]** | Move window to column number [Number] |
 | **Meta + Ctrl + Shift + [Number]** | Move column to position number [Number] |

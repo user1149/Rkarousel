@@ -1,27 +1,27 @@
 import QtQuick 6.0
 import org.kde.kwin 3.0
 import org.kde.notification 1.0
-import "../code/main.js" as Karousel
+import "../code/main.js" as Rkarousel
 
 Item {
     id: qmlBase
 
-    property var karouselInstance
+    property var rkarouselInstance
 
     Component.onCompleted: {
-        qmlBase.karouselInstance = Karousel.init();
+        qmlBase.rkarouselInstance = Rkarousel.init();
     }
 
     Component.onDestruction: {
-        qmlBase.karouselInstance.destroy();
+        qmlBase.rkarouselInstance.destroy();
     }
 
     Notification {
         id: notificationInvalidTiledDesktops
         componentName: "plasma_workspace"
         eventId: "notification"
-        title: "Karousel"
-        text: "Your Tiled Desktops regex is malformed, please review your Karousel configuration"
+        title: "Rkarousel"
+        text: "Your Tiled Desktops regex is malformed, please review your Rkarousel configuration"
         flags: Notification.Persistent
         urgency: Notification.HighUrgency
     }

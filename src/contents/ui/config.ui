@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>KWin::KarouselConfigForm</class>
-    <widget class="QWidget" name="KWin::KarouselConfigForm">
+    <class>KWin::RkarouselConfigForm</class>
+    <widget class="QWidget" name="KWin::RkarouselConfigForm">
         <property name="windowTitle">
-            <string>Karousel</string>
+            <string>Rkarousel</string>
         </property>
         <property name="autoFillBackground">
             <bool>false</bool>
@@ -490,7 +490,7 @@
          <item>
             <widget class="QLabel" name="label">
                 <property name="text">
-                    <string>Для вступления изменений в силу скрипт Karousel необходимо перезапустить.</string>
+                    <string>Для вступления изменений в силу скрипт Rkarousel необходимо перезапустить.</string>
                 </property>
             </widget>
         </item>
