@@ -29,20 +29,21 @@ The script requires the following QML modules (usually present in the system, bu
 
 ## Installation
 
-### Manual Installation
-1.  Download the source code.
-2.  Open a terminal in the project directory.
-3.  Run the installation command:
+### Via Command Line
+1.  Visit the [releases page](https://github.com/user1149/Rkarousel/releases) and download the latest archive .
+2.  Extract the archive to a convenient folder.
+3.  Open a terminal in the extracted directory.
+4.  Run the installation command:
 
 ```bash
 kpackagetool6 --type KWin/Script -i .
 ```
 
-To update the script (if you downloaded a new version), use the `-u` flag:
-
-```bash
-kpackagetool6 --type KWin/Script -u .
-```
+### Via GUI (System Settings)
+1.  Visit the [releases page](https://github.com/user1149/Rkarousel/releases) and download the latest archive.
+2.  Open **System Settings** -> **Window Management** -> **KWin Scripts**.
+3.  Click the **Install from File...** button (or similar).
+4.  Select the downloaded archive and confirm the installation.
 
 ### Enabling the Script
 
