@@ -1,5 +1,14 @@
 "use strict";
-console.log("load Rkarousel")
+
+// ============================================================================
+// RKAROUSEL - KWin Script для тайлового оконного менеджера на основе колонок
+// ============================================================================
+
+console.log("load Rkarousel");
+
+// ============================================================================
+// Инициализация обработчиков сигналов рабочего пространства
+// ============================================================================
 
 function initWorkspaceSignalHandlers(world, focusPasser) {
     const manager = new SignalManager();
@@ -509,7 +518,7 @@ class Actions {
         this._initIndexedActions();
     }
 
-    // --- Фокусные действия ---
+    // Инициализация действий для управления фокусом
     _initFocusActions() {
         this.focusLeft = (cm, dm, window, column, grid) => {
             const leftColumn = grid.getLeftColumn(column);
@@ -576,7 +585,7 @@ class Actions {
         };
     }
 
-    // --- Действия перемещения окон ---
+    // Инициализация действий для перемещения окон
     _initWindowMoveActions() {
         this.windowMoveLeft = (cm, dm, window, column, grid) => {
             if (column.getWindowCount() === 1) {
@@ -644,7 +653,7 @@ class Actions {
         };
     }
 
-    // --- Действия с колонками ---
+    // Инициализация действий с колонками
     _initColumnActions() {
         this.columnMoveLeft = (cm, dm, window, column, grid) => {
             grid.moveColumnLeft(column);
@@ -667,7 +676,7 @@ class Actions {
         };
     }
 
-    // --- Действия изменения ширины ---
+    // Инициализация действий для изменения ширины колонок
     _initWidthActions() {
         this.columnWidthIncrease = (cm, dm, window, column, grid) => {
             this.config.columnResizer.increaseWidth(column);
@@ -727,7 +736,7 @@ class Actions {
         };
     }
 
-    // --- Действия прокрутки грида ---
+    // Инициализация действий для прокрутки сетки окон
     _initGridScrollActions() {
         this.gridScrollLeft = (cm, dm) => {
             this._gridScroll(dm, -this.config.manualScrollStep);
@@ -787,7 +796,7 @@ class Actions {
         };
     }
 
-    // --- Действия с рабочими столами ---
+    // Инициализация действий с рабочими столами
     _initDesktopActions() {
         this.screenSwitch = (cm, dm) => {
             dm.selectScreen(Workspace.activeScreen);
@@ -802,7 +811,7 @@ class Actions {
         };
     }
 
-    // --- Действия с индексами ---
+    // Инициализация действий с индексами (горячие клавиши для колонок 1-9)
     _initIndexedActions() {
         this.focus = (columnIndex, cm, dm) => {
             this._withCurrentDesktopGrid(dm, (desktop, grid) => {
@@ -832,7 +841,7 @@ class Actions {
         };
     }
 
-    // --- Вспомогательные методы ---
+    // Вспомогательные методы для действий
     _withCurrentDesktopGrid(dm, callback) {
         const desktop = dm.getCurrentDesktop();
         if (desktop === undefined) return;
@@ -853,7 +862,7 @@ class Actions {
         const currentVisibleColumns = Array.from(grid.getVisibleColumns(visibleRange, true));
         console.assert(
             currentVisibleColumns.includes(focusedColumn),
-            "should at least contain the focused column"
+            "должна содержать хотя бы сфокусированную колонку"
         );
 
         let targetColumn, wantedVisibleColumns;
@@ -876,7 +885,7 @@ class Actions {
                 ? wantedVisibleColumns.pop()
                 : wantedVisibleColumns.shift();
 
-            if (removedColumn === focusedColumn) break; // don't scroll past the currently focused column
+            if (removedColumn === focusedColumn) break; // не прокручивать дальше фокусированной колонки
         }
     }
 
@@ -1459,20 +1468,20 @@ class Column {
         const { gapsInnerVertical } = this.grid.config;
         const totalHeight = this.grid.desktop.tilingArea.height;
 
-        // 1. Считаем доступное пространство по вертикали
+        // Рассчитаем доступное пространство по вертикали
         const availableSpace = totalHeight - (windowCount - 1) * gapsInnerVertical;
 
-        // 2. Формируем массив ограничений для функции fillSpace
+        // Формируем массив ограничений для функции fillSpace
         const constraints = [];
         const windowsList = [];
 
         // Итерируемся по окнам в этой колонке
         for (const window of this.windows.iterator()) {
-            // Получаем минимальную высоту, которую требует само окно (через KWin API)
+            // Получаем минимальную высоту, которую требует само окно
             const minHeight = window.client.kwinClient.minSize.height;
 
             constraints.push({
-                // Если minHeight не задан или 0, ставим хотя бы 1 пиксель, чтобы избежать деления на ноль
+                // Если minHeight не задан или 0, ставим хотя бы 1 пиксель
                 min: minHeight > 0 ? minHeight : 1,
                 // Максимальная высота окна не может превышать доступное пространство
                 max: availableSpace
@@ -1480,15 +1489,15 @@ class Column {
             windowsList.push(window);
         }
 
-        // 3. Используем уже существующую функцию fillSpace
+        // Используем функцию fillSpace для распределения пространства
         const heights = fillSpace(availableSpace, constraints);
 
-        // 4. Применяем рассчитанные высоты к объектам окон
+        // Применяем рассчитанные высоты к окнам
         windowsList.forEach((window, index) => {
             window.height = heights[index];
         });
 
-        // Сообщаем десктопу, что раскладка изменилась, чтобы он перерисовал окна
+        // Сообщаем десктопу об изменении раскладки
         this.grid.desktop.onLayoutChanged();
     }
 
@@ -1641,7 +1650,7 @@ Column.minWidth = 40;
 
 class Desktop {
     constructor(kwinDesktop, pinManager, config, getScreen, layoutConfig, focusPasser) {
-        // --- Инициализация состояния ---
+        // Инициализация состояния прокрутки
         this.scrollX = 0;
         this.gestureScrollXInitial = null;
 
@@ -1649,7 +1658,7 @@ class Desktop {
         this.dirtyScroll = true;
         this.dirtyPins = true;
 
-        // --- Основная инициализация ---
+        // Основная инициализация
         this.kwinDesktop = kwinDesktop;
         this.pinManager = pinManager;
         this.config = config;
@@ -1660,7 +1669,7 @@ class Desktop {
         this.tilingArea = Desktop.getTilingArea(this.clientArea, kwinDesktop, pinManager, config);
     }
 
-    // --- Геометрия и Области ---
+    // Методы для работы с геометрией и областями экрана
 
     updateArea() {
         const newClientArea = Desktop.getClientArea(this.getScreen(), this.kwinDesktop);
@@ -1701,7 +1710,7 @@ class Desktop {
         return this.getVisibleRange(this.scrollX);
     }
 
-    // --- Скроллинг ---
+    // Методы для управления прокруткой
 
     scrollIntoView(range) {
         const left = range.getLeft();
@@ -1761,7 +1770,7 @@ class Desktop {
         this.setScroll(this.scrollX + dx, force);
     }
 
-    // --- Жесты ---
+    // Методы для жестов (touch/trackpad)
 
     gestureScroll(amount) {
         if (!this.config.gestureScroll) return;
@@ -1779,7 +1788,7 @@ class Desktop {
         this.gestureScrollXInitial = null;
     }
 
-    // --- Рендеринг и Жизненный цикл ---
+    // Методы для рендеринга и управления жизненным циклом
 
     arrange() {
         // обновляем только если что-то изменилось
@@ -1790,7 +1799,7 @@ class Desktop {
         }
 
         const x = this.tilingArea.x - this.scrollX;
-        // Grid.arrange сам отфильтрует невидимые окна
+        // Grid.arrange отфильтрует невидимые окна сам
         this.grid.arrange(x, this.getCurrentVisibleRange());
         this.dirty = false;
     }
@@ -1884,21 +1893,25 @@ class ColumnRange {
 // Привязка для обратной совместимости
 Desktop.ColumnRange = ColumnRange;
 
+// ============================================================================
+// Сетка окон (управление колонками, рендеринг, фокус)
+// ============================================================================
+
 class Grid {
     constructor(desktop, config, focusPasser) {
-        // --- Зависимости ---
+        // Зависимости
         this.desktop = desktop;
         this.config = config;
         this.focusPasser = focusPasser;
 
-        // --- Состояние ---
+        // Состояние
         this.columns = new LinkedList();
         this.lastFocusedColumn = null;
         this.width = 0; // Общая ширина всех колонок, включая отступы
 
-        // --- Состояние взаимодействия ---
+        // Состояние взаимодействия пользователя
         this.userResize = false;
-        // Delayer предотвращает зависание или мерцание UI после частых событий изменения размера
+        // Delayer предотвращает зависание UI после частых событий
         this.userResizeFinishedDelayer = new Delayer(50, () => {
             this.desktop.onLayoutChanged();
             this.desktop.autoAdjustScroll();
@@ -1906,24 +1919,23 @@ class Grid {
         });
     }
 
-    // --- Жизненный цикл ---
+    // Управление жизненным циклом
     destroy() {
         this.userResizeFinishedDelayer.destroy();
     }
 
-    // --- Управление колонками (Перемещение и Порядок) ---
+    // Управление колонками (перемещение и порядок)
     /**
-     * Перемещает колонку на определенную позицию относительно другой колонки.
-     * @param {Column} column - Перемещаемая колонка.
-     * @param {Column|null} leftColumn - Колонка, после которой нужно поместить 'column'. Если null, помещается в начало.
+     * Перемещает колонку на определенную позицию относительно другой.
+     * @param {Column} column - Перемещаемая колонка
+     * @param {Column|null} leftColumn - Колонка, после которой поместить 'column'. Если null, помещается в начало
      */
     moveColumn(column, leftColumn) {
         if (column === leftColumn) {
             return;
         }
 
-        // Определяем направление для оптимизации обновления координат.
-        // Если движемся влево (или в начало), сдвиг затрагивает колонки начиная с новой позиции.
+        // Определяем направление для оптимизации обновления координат
         const isMovingLeft = leftColumn === null ? true : column.isToTheRightOf(leftColumn);
         const firstAffectedColumn = isMovingLeft ? column : this.getRightColumn(column);
 
@@ -1963,7 +1975,7 @@ class Grid {
         }
     }
 
-    // --- Геттеры и Обход ---
+    // Геттеры и навигация по колонкам
     getWidth() {
         return this.width;
     }
@@ -1992,15 +2004,13 @@ class Grid {
         return this.columns.getItemAtIndex(i);
     }
 
-    // --- Макет и Геометрия ---
+    // Макет и расчет геометрии
     /**
-     * Пересчитывает позицию X для колонок, начиная с указанной.
-     * @param {Column|null} startColumn - Колонка, с которой начать пересчет.
+     * Пересчитывает X координату для колонок, начиная с указанной.
+     * @param {Column|null} startColumn - Колонка, с которой начать пересчет
      */
     columnsSetX(startColumn) {
-        // Определяем, откуда начать расчет X.
-        // Если startColumn равен null, мы можем рассчитывать с самого конца (контекст no-op) или начала.
-        // Логика ниже подразумевает: если startColumn передан, смотрим на его предшественника.
+        // Определяем, откуда начать расчет X
         const prevColumn = startColumn === null ? this.columns.getLast() : this.columns.getPrev(startColumn);
 
         let currentX = 0;
@@ -2024,8 +2034,8 @@ class Grid {
 
     /**
      * Основной цикл рендеринга колонок.
-     * @param {number} x - Текущее смещение прокрутки X.
-     * @param {Range} visibleRange - Видимая область экрана.
+     * @param {number} x - Текущее смещение прокрутки X
+     * @param {Range} visibleRange - Видимая область экрана
      */
     arrange(x, visibleRange) {
         // Буфер помогает при плавном скролле, рендеря элементы чуть за пределами видимости
@@ -2052,7 +2062,7 @@ class Grid {
             x += colWidth + gap;
         }
 
-        // Убеждаемся, что временные окна (диалоги/попапы) сфокусированного окна остаются видимыми
+        // Убеждаемся, что временные окна сфокусированного окна остаются видимыми
         const focusedWindow = this.getLastFocusedWindow();
         if (focusedWindow !== null) {
             focusedWindow.client.ensureTransientsVisible(this.desktop.clientArea);
@@ -2089,7 +2099,7 @@ class Grid {
         }
     }
 
-    // --- Управление фокусом ---
+    // Управление фокусом
     getLastFocusedColumn() {
         // Убеждаемся, что кешированная ссылка все еще принадлежит этому гриду
         if (this.lastFocusedColumn === null || this.lastFocusedColumn.grid !== this) {
@@ -2115,7 +2125,7 @@ class Grid {
         this.desktop.scrollToColumn(column, false);
     }
 
-    // --- События (Добавление/Удаление/Изменение размера) ---
+    // События (добавление/удаление/изменение размера колонок)
     onColumnAdded(column, leftColumn) {
         if (leftColumn === null) {
             this.columns.insertStart(column);
@@ -2185,6 +2195,10 @@ class Grid {
     }
 }
 
+// ============================================================================
+// Диапазон (Range) для работы с видимостью элементов
+// ============================================================================
+
 var Range;
 (function (Range) {
     const MaximizedMode = {
@@ -2241,6 +2255,10 @@ var Range;
     Range.contains = contains;
     Range.minus = minus;
 })(Range || (Range = {}));
+
+// ============================================================================
+// Окно в тайловом менеджере
+// ============================================================================
 
 class Window {
     constructor(client, column) {
@@ -2340,7 +2358,7 @@ class Window {
         this.column.onWindowRemoved(this, passFocus);
     }
 
-    // Private methods
+    // Приватные методы
     _initializeFocusedState() {
         const UNMAXIMIZED = 0;
         let maximizedMode = this.client.getMaximizedMode();
@@ -2397,6 +2415,10 @@ class Window {
         }
     }
 }
+
+// ============================================================================
+// Вспомогательные классы для правил окон
+// ============================================================================
 
 class ClientMatcher {
     constructor(regex) {
@@ -2559,6 +2581,10 @@ class WindowRuleEnforcer {
     }
 }
 
+// ============================================================================
+// Вспомогательные классы для задержек и таймеров
+// ============================================================================
+
 class Delayer {
     constructor(delay, f) {
         this.timer = initQmlTimer();
@@ -2597,6 +2623,10 @@ class Doer {
         return this.nCalls > 0;
     }
 }
+
+// ============================================================================
+// Двусвязный список (LinkedList)
+// ============================================================================
 
 class LinkedList {
     constructor() {
@@ -2793,6 +2823,10 @@ class LinkedList {
     LinkedList.Node = Node;
 })(LinkedList || (LinkedList = {}));
 
+// ============================================================================
+// Ограничитель скорости (RateLimiter)
+// ============================================================================
+
 class RateLimiter {
     constructor(maxRequests, intervalMs) {
         this.maxRequests = maxRequests;
@@ -2817,6 +2851,10 @@ class RateLimiter {
         return false;
     }
 }
+
+// ============================================================================
+// Действия с клавиатурой (ShortcutAction)
+// ============================================================================
 
 class ShortcutAction {
     constructor(keyBinding, callback) {
@@ -2848,6 +2886,10 @@ class ShortcutAction {
     }
 }
 
+// ============================================================================
+// Менеджер сигналов (SignalManager)
+// ============================================================================
+
 class SignalManager {
     constructor() {
         this.connections = [];
@@ -2865,6 +2907,10 @@ class SignalManager {
         this.connections = [];
     }
 }
+
+// ============================================================================
+// Вспомогательные функции (утилиты)
+// ============================================================================
 
 function union(array1, array2) {
     return [...new Set([...array1, ...array2])];
@@ -3056,6 +3102,10 @@ function rectContainsPoint(rect, point) {
 function applyMacro(template, value) {
     return template.replace("{}", String(value));
 }
+
+// ============================================================================
+// Основной менеджер клиентов (ClientManager)
+// ============================================================================
 
 class ClientManager {
     constructor(config, world, desktopManager, pinManager) {
@@ -3299,6 +3349,10 @@ class ClientManager {
     }
 }
 
+// ============================================================================
+// Обертка над KWin клиентом (ClientWrapper)
+// ============================================================================
+
 class ClientWrapper {
     constructor(kwinClient, constructInitialState, transientFor, rulesSignalManager) {
         this.kwinClient = kwinClient;
@@ -3509,6 +3563,10 @@ class ClientWrapper {
     }
 }
 
+// ============================================================================
+// Утилиты для работы с KWin клиентами (Clients)
+// ============================================================================
+
 var Clients = (function() {
     const prohibitedClasses = [
         "ksmserver-logout-greeter",
@@ -3594,6 +3652,10 @@ var Clients = (function() {
         isOnOneOfVirtualDesktops: isOnOneOfVirtualDesktops
     };
 })();
+
+// ============================================================================
+// Менеджер рабочих столов (DesktopManager)
+// ============================================================================
 
 class DesktopManager {
     constructor(pinManager, config, layoutConfig, focusPasser, desktopFilter) {
@@ -3748,6 +3810,11 @@ class DesktopManager {
         }
     }
 }
+
+// ============================================================================
+// Передача фокуса между окнами (FocusPassing)
+// ============================================================================
+
 var FocusPassing;
 (function(FocusPassing) {
     FocusPassing.Type = {
@@ -3808,6 +3875,10 @@ var FocusPassing;
     }
     Request.VALID_MS = 200;
 })(FocusPassing || (FocusPassing = {}));
+
+// ============================================================================
+// Менеджер закрепленных окон (PinManager)
+// ============================================================================
 
 class PinManager {
     constructor() {
@@ -3927,6 +3998,10 @@ class PinManager {
 
     PinManager.Lot = Lot;
 })(PinManager || (PinManager = {}));
+
+// ============================================================================
+// Главный класс - управление всей системой (World)
+// ============================================================================
 
 class World {
     constructor(config) {
@@ -4116,6 +4191,9 @@ class World {
     }
 }
 
+// ============================================================================
+// Состояния клиентов (ClientState)
+// ============================================================================
 // ClientState.Docked
 var ClientState;
 (function(ClientState) {
@@ -4142,7 +4220,7 @@ var ClientState;
     ClientState.Docked = Docked;
 })(ClientState || (ClientState = {}));
 
-// ClientState.Floating
+// Плавающие окна
 var ClientState;
 (function(ClientState) {
     class Floating {
@@ -4200,7 +4278,7 @@ var ClientState;
     ClientState.Floating = Floating;
 })(ClientState || (ClientState = {}));
 
-// ClientState.Manager
+// Менеджер состояний
 var ClientState;
 (function(ClientState) {
     class Manager {
@@ -4224,7 +4302,7 @@ var ClientState;
     ClientState.Manager = Manager;
 })(ClientState || (ClientState = {}));
 
-// ClientState.Pinned
+// Закрепленные окна
 var ClientState;
 (function(ClientState) {
     class Pinned {
@@ -4320,7 +4398,7 @@ var ClientState;
     ClientState.Pinned = Pinned;
 })(ClientState || (ClientState = {}));
 
-// ClientState.Tiled
+// Тайловые окна (управляемые тайл-менеджером)
 var ClientState;
 (function(ClientState) {
     class Tiled {
@@ -4604,7 +4682,7 @@ var ClientState;
     ClientState.Tiled = Tiled;
 })(ClientState || (ClientState = {}));
 
-// ClientState.TiledMinimized
+// Свернутые тайловые окна
 var ClientState;
 (function(ClientState) {
     class TiledMinimized {
@@ -4636,6 +4714,10 @@ var ClientState;
     }
     ClientState.TiledMinimized = TiledMinimized;
 })(ClientState || (ClientState = {}));
+
+// ============================================================================
+// Точка входа и инициализация
+// ============================================================================
 
 function init() {
     return new World(loadConfig());
