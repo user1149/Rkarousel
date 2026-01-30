@@ -4541,6 +4541,10 @@ var ClientState;
                     client.moveTransients(dx, dy);
                 }
 
+                if (moving) {
+                    return;
+                }
+
                 if (kwinClient.resize) {
                     world.do(() => {
                         if (newGeometry.width !== oldGeometry.width) {
